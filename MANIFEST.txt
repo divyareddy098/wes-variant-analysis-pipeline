@@ -1,0 +1,14 @@
+Project: Whole-Exome Variant Analysis Pipeline
+
+Folders:
+data/raw/          Raw FASTQ or BAM input files
+data/reference/    Reference genome and index files
+data/processed/    Sorted/indexed BAM outputs
+results/vcf/       Raw and filtered variant calls
+results/annotation/ Annotated variant tables
+results/qc/        QC summaries
+logs/              Pipeline logs
+figures/           Summary plots
+scripts/           Pipeline scripts
+
+Large sequencing files are excluded from GitHub.

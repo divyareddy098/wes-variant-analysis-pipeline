@@ -1,0 +1,14 @@
+name: wes-variant-analysis
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  - python=3.10
+  - bwa
+  - samtools
+  - bcftools
+  - htslib
+  - tabix
+  - fastqc
+  - multiqc
+  - pandas
