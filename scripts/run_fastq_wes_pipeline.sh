@@ -60,3 +60,5 @@ tabix -p vcf $ANNODIR/annotated.vcf.gz
 # Step 8: Summary
 echo "Variant statistics..."
 bcftools stats $VCFDIR/filtered.vcf.gz > $ANNODIR/variant_stats.txt
+
+echo "done"
