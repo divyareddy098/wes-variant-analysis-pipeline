@@ -1,43 +1,47 @@
-# 🧬 Whole-Exome Variant Analysis Pipeline (1000 Genomes)
+# 🧬 Whole-Exome Variant Analysis Pipeline (FASTQ-based)
 
 ## Project Goal
-This project implements a complete bioinformatics pipeline to process whole-exome sequencing (WES) data from the 1000 Genomes Project, perform variant discovery, and analyze functional consequences of genomic variation.
+This project implements a complete end-to-end bioinformatics pipeline to process raw whole-exome sequencing (WES) data from FASTQ files, perform variant discovery, and analyze functional consequences of genomic variation.
 
-The objective is to replicate real-world variant analysis workflows used in clinical genomics and derive biologically meaningful insights from population-scale sequencing data.
+The objective is to replicate real-world variant analysis workflows used in clinical genomics and derive biologically meaningful insights from sequencing data.
 
 ---
 
 ## Overview
-This project presents an end-to-end WES analysis pipeline covering:
+This project presents a full WES analysis pipeline covering:
 
-- Read alignment to the human reference genome (GRCh38)  
-- Variant calling for SNPs and indels  
+- Processing of raw FASTQ sequencing reads  
+- Read alignment to the human reference genome (GRCh38) using BWA  
+- BAM processing (sorting, indexing) using SAMtools  
+- Variant calling for SNPs and indels using bcftools  
 - Quality-based filtering of variants  
 - Functional annotation using SnpEff  
 - Downstream analysis of variant impact and consequence  
 
-The workflow reflects standard pipelines used in research and precision medicine settings.
+The workflow reflects standard pipelines used in research and precision medicine.
 
 ---
 
 ## Workflow Overview
 
-1. Read alignment to reference genome  
-2. BAM processing and quality control  
-3. Variant calling (SNVs and indels)  
-4. Variant filtering  
-5. Functional annotation  
-6. Coding variant analysis  
+1. FASTQ preprocessing (subsampling for efficient analysis)  
+2. Read alignment to reference genome (BWA)  
+3. BAM processing (sorting, indexing)  
+4. Variant calling (bcftools)  
+5. Variant filtering  
+6. Functional annotation (SnpEff)  
+7. Variant impact and consequence analysis  
 
 ---
 
 ## Key Features
 
-- End-to-end WES pipeline using Bash-based workflow  
-- Variant calling using bcftools/GATK  
-- Functional annotation of variants using SnpEff  
-- Extraction and analysis of coding variants  
-- Generation of biologically interpretable visualizations  
+- End-to-end WES pipeline from raw sequencing reads  
+- Alignment using BWA  
+- Variant calling using bcftools  
+- Functional annotation using SnpEff  
+- Automated pipeline execution via a single Bash script  
+- Generation of biologically interpretable results  
 
 ---
 
@@ -46,13 +50,20 @@ The workflow reflects standard pipelines used in research and precision medicine
 
 wes-variant-analysis/
 │── scripts/ # Pipeline scripts
-│── data/ # Input data
+│ └── run_fastq_wes_pipeline.sh
+│
+│── data/
+│ ├── raw/ # Original FASTQ files
+│ ├── raw_subsampled/ # Subsampled FASTQ for efficient processing
+│ ├── reference/ # Reference genome (chr22)
+│ └── processed/ # BAM files
+│
 │── results/
 │ ├── vcf/ # Variant call files
 │ ├── annotation/ # Annotated variants and summaries
-│ ├── qc/ # Quality control metrics
-│── figures/
-│ ├── final/ # Final plots
+│
+│── figures/ # Visualization outputs
+│── logs/ # Pipeline logs
 │── README.md
 
 
@@ -60,93 +71,71 @@ wes-variant-analysis/
 
 ## Workflow Details
 
-### Alignment
-- Reads aligned to GRCh38 reference genome  
-- Generated sorted and indexed BAM files using samtools  
+### FASTQ Processing
+- Raw sequencing reads processed and subsampled for efficient computation  
 
-### BAM Processing
-- Sorting and indexing performed  
-- Alignment quality assessed  
+### Alignment
+- Reads aligned to GRCh38 reference genome using BWA  
+- SAM converted to BAM, sorted, and indexed using SAMtools  
 
 ### Variant Calling
-- SNPs and indels identified using bcftools/GATK  
-- Generated compressed VCF files  
+- SNPs and indels identified using bcftools  
+- Compressed and indexed VCF files generated  
 
 ### Filtering
-- Applied quality thresholds to retain high-confidence variants  
-- Removed low-quality and low-depth variants  
+- Quality filtering applied (e.g., QUAL ≥ 20)  
+- Retained high-confidence variants  
 
 ### Annotation
-- Variants annotated using SnpEff  
+- Variants annotated using SnpEff (GRCh38 database)  
 - Functional effects categorized (e.g., intronic, missense, synonymous)  
-
-### Coding Variant Analysis
-- Extracted protein-coding variants  
-- Focused on biologically meaningful mutation types  
-- Generated consequence-level summaries  
 
 ---
 
 ## Results and Biological Insights
 
-### Variant Impact Distribution
+### Variant Statistics
 
-Most variants fall into the **MODIFIER category**, indicating that the majority of variants occur in non-coding regions such as introns and intergenic regions. High-impact variants are rare, which is consistent with population-level genomic data.
+- ~2,551 raw variants identified  
+- ~1,363 high-confidence filtered variants  
+- ~1,330 SNPs and 33 indels  
+
+These results are consistent with expected variant distributions in targeted genomic regions.
+
+---
+
+### Functional Impact Distribution
+
+- Majority of variants fall under **MODIFIER impact**, indicating non-coding regions  
+- Smaller proportions correspond to LOW, MODERATE, and HIGH impact variants  
+
+This reflects expected biological patterns in human genomic variation.
 
 ---
 
 ### Variant Consequence Distribution
 
-Genome-wide analysis shows that:
-
-- Intronic and intergenic variants dominate  
-- Regulatory-region variants (upstream/downstream) are common  
-- Coding variants represent a small but functionally important subset  
+- Intronic and intergenic variants dominate the dataset  
+- Regulatory variants (upstream/downstream) are common  
+- Coding variants (missense, splice) represent a smaller but functionally significant subset  
 
 ---
 
-### Coding Variant Analysis
+### Gene-Level Variation
 
-To focus on functional variation, coding variants were extracted and analyzed separately.
-
-![Coding Variant Consequences](figures/coding_variant_consequences.png)
-
-#### Key Findings
-
-- **Missense variants are the most abundant coding mutations**, indicating frequent amino acid changes  
-- **Synonymous variants are also highly represented**, serving as a neutral baseline  
-- **High-impact variants (stop-gained, frameshift) are rare**, consistent with negative selection  
-- The distribution reflects expected patterns of functional variation in human genomes  
-
----
-
-### Gene-Level Variant Analysis
-
-Top genes with high variant counts were identified. However:
-
-- Variant counts are influenced by gene length and genomic coverage  
-- Normalized gene-level analysis improves interpretability  
-
----
-
-### Variant Statistics
-
-Variant-level quality metrics were computed using bcftools:
-
-- Total variants identified from filtered dataset  
-- Distribution of SNPs and indels  
-- Quality statistics used to ensure reliability  
+- Variants are distributed across multiple genes  
+- Observed variation reflects gene length and genomic coverage  
+- Supports downstream gene-level interpretation  
 
 ---
 
 ## Outputs
 
-- BAM files (aligned reads)  
+- Sorted and indexed BAM files  
 - Filtered VCF files  
-- Annotated variant datasets  
-- Coding variant summaries  
-- Quality control metrics  
-- Visualization plots  
+- Annotated VCF datasets  
+- Variant statistics summaries  
+- Functional impact and consequence summaries  
 
 ---
 
@@ -154,20 +143,20 @@ Variant-level quality metrics were computed using bcftools:
 
 - Bash / Linux  
 - Python  
-- samtools  
+- BWA  
+- SAMtools  
 - bcftools  
 - SnpEff  
-- GATK (optional)  
 
 ---
 
 ## Skills Demonstrated
 
-- NGS data processing  
+- NGS data processing from raw FASTQ  
+- Sequence alignment and BAM processing  
 - Variant calling and filtering  
-- Functional annotation  
-- Biological interpretation of genomic data  
-- Data visualization  
+- Functional annotation of genomic variants  
+- Biological interpretation of sequencing data  
 - Reproducible pipeline development  
 
 ---
@@ -181,7 +170,7 @@ This project demonstrates workflows used in:
 - Variant interpretation  
 - Biomarker discovery  
 
-It highlights the ability to move from raw sequencing data to biologically meaningful insights.
+It highlights the ability to process raw sequencing data and extract biologically meaningful insights.
 
 ---
 
@@ -190,8 +179,10 @@ It highlights the ability to move from raw sequencing data to biologically meani
 ```bash
 conda env create -f environment.yml
 conda activate wes-variant-analysis
-bash scripts/run_pipeline.sh
+
+bash scripts/run_fastq_wes_pipeline.sh
 ```
+---
 
 ## Author
 
