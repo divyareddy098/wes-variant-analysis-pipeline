@@ -218,5 +218,5 @@ bash scripts/run_fastq_wes_pipeline.sh
 
 ## Author
 
-Divya Reddy
-MS Bioinformatics, Georgia Institute of Technology
+- Divya Reddy
+- MS Bioinformatics, Georgia Institute of Technology
