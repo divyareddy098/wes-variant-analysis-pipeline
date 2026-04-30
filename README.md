@@ -92,51 +92,64 @@ wes-variant-analysis/
 
 ---
 
-## Results and Biological Insights
+## Results 
 
-### Variant Statistics
+### Variant Counts
 
-- ~2,551 raw variants identified  
-- ~1,363 high-confidence filtered variants  
-- ~1,330 SNPs and 33 indels  
-
-These results are consistent with expected variant distributions in targeted genomic regions.
-
----
-
-### Functional Impact Distribution
-
-- Majority of variants fall under **MODIFIER impact**, indicating non-coding regions  
-- Smaller proportions correspond to LOW, MODERATE, and HIGH impact variants  
-
-This reflects expected biological patterns in human genomic variation.
+| Metric | Value |
+|------|------|
+| Raw variants | ~2,551 |
+| Filtered variants | ~1,363 |
+| SNPs | ~1,330 |
+| Indels | ~33 |
 
 ---
 
-### Variant Consequence Distribution
+### Functional Impact
 
-- Intronic and intergenic variants dominate the dataset  
-- Regulatory variants (upstream/downstream) are common  
-- Coding variants (missense, splice) represent a smaller but functionally significant subset  
-
----
-
-### Gene-Level Variation
-
-- Variants are distributed across multiple genes  
-- Observed variation reflects gene length and genomic coverage  
-- Supports downstream gene-level interpretation  
+| Impact | Count |
+|--------|------|
+| MODIFIER | 6,834 |
+| LOW | 75 |
+| MODERATE | 49 |
+| HIGH | 15 |
 
 ---
 
-## Outputs
+### Top Variant Consequences
 
-- Sorted and indexed BAM files  
-- Filtered VCF files  
-- Annotated VCF datasets  
-- Variant statistics summaries  
-- Functional impact and consequence summaries  
+- Intronic variants dominate (~3,885)
+- Regulatory variants (upstream/downstream) are common
+- Missense variants (~49) represent functional coding changes
+- Splice-related variants (~14) may affect gene expression
 
+---
+
+### Key Takeaway
+
+The observed variant distribution aligns with expected biological patterns:
+- Non-coding variation dominates
+- Functional mutations are rare but important
+- Coding variants provide the most biologically actionable insights
+
+---
+
+## Biological Insights
+
+The pipeline was used to characterize genomic variation from sequencing data and extract biologically meaningful patterns.
+
+### Key Findings
+
+- Identified ~1,363 high-confidence variants after filtering
+- Majority of variants are located in **non-coding regions**, consistent with genome-wide distributions
+- Detected **49 missense variants and 14 splice-related variants**, representing potentially functional mutations
+- High-impact variants are rare (15 total), reflecting evolutionary constraints on deleterious mutations
+
+### Gene-Level Observations
+
+- Variants were distributed across multiple genes, including MRTFA, DEPDC5, and ADA2
+- Gene-level variation reflects a combination of gene size, genomic location, and sequencing coverage
+- Highlights the importance of normalization in interpreting variant burden
 ---
 
 ## Tools & Technologies
