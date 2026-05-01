@@ -2,7 +2,7 @@
 
 set -e
 
-echo "🚀 Starting FASTQ → WES Variant Pipeline"
+echo "Starting FASTQ → WES Variant Pipeline"
 
 # paths
 FASTQ="data/raw_subsampled/SRR_100k_reads.fastq.gz"
